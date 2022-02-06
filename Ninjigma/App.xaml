@@ -1,0 +1,32 @@
+﻿<Application
+    x:Class="Ninjigma.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:Microsoft.UI.Xaml.Controls">
+
+	<Application.Resources>
+		<controls:XamlControlsResources>
+			<controls:XamlControlsResources.MergedDictionaries>
+				<ResourceDictionary>
+					<ResourceDictionary.ThemeDictionaries>
+
+						<ResourceDictionary x:Key="Light">
+							<SolidColorBrush x:Key="ButtonBackground" Color="{ThemeResource SystemAccentColor}"/>
+							<SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="{ThemeResource SystemAccentColorLight2}"/>
+							<SolidColorBrush x:Key="ButtonBackgroundPressed" Color="{ThemeResource SystemAccentColorLight3}"/>
+							<SolidColorBrush x:Key="DropTarget" Color="{ThemeResource SystemAccentColorLight1}" />
+						</ResourceDictionary>
+						<ResourceDictionary x:Key="Dark">
+							<SolidColorBrush x:Key="ButtonBackground" Color="{ThemeResource SystemAccentColor}"/>
+							<SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="{ThemeResource SystemAccentColorDark2}"/>
+							<SolidColorBrush x:Key="ButtonBackgroundPressed" Color="{ThemeResource SystemAccentColorDark3}"/>
+							<SolidColorBrush x:Key="DropTarget" Color="{ThemeResource SystemAccentColorDark1}" />
+						</ResourceDictionary>
+					</ResourceDictionary.ThemeDictionaries>
+				</ResourceDictionary>
+				<!-- Other app resources here -->
+			</controls:XamlControlsResources.MergedDictionaries>
+		</controls:XamlControlsResources>
+	</Application.Resources>
+
+</Application>
