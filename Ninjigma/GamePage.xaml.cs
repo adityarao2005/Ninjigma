@@ -27,9 +27,24 @@ namespace Ninjigma
 			get; set;
 		}
 
+		private Difficulty Difficulty
+		{
+			get; set;
+		}
+
 		public GamePage()
 		{
+			Difficulty = Difficulty.EASY;
 			this.InitializeComponent();
+		}
+
+		protected override void OnNavigatedTo(NavigationEventArgs e)
+		{
+			var parameters = e.Parameter as object[];
+			Image = parameters[0] as Image;
+			Difficulty = (Difficulty) parameters[1];
+
+			base.OnNavigatedTo(e);
 		}
 	}
 }
