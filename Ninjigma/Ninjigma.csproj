@@ -122,20 +122,22 @@
     <Compile Include="ContentRadioButton.xaml.cs">
       <DependentUpon>ContentRadioButton.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Converters\EnumConverter.cs" />
     <Compile Include="Converters\NullChecker.cs" />
     <Compile Include="Difficulty.cs" />
-    <Compile Include="GamePage.xaml.cs">
-      <DependentUpon>GamePage.xaml</DependentUpon>
+    <Compile Include="GamePage.Easy.xaml.cs">
+      <DependentUpon>GamePage.Easy.xaml</DependentUpon>
     </Compile>
+    <Compile Include="GridManager.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Triggers\PropertyTrigger.cs" />
     <Compile Include="UniformGrid.xaml.cs">
       <DependentUpon>UniformGrid.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Util\ArrayUtil.cs" />
+    <Compile Include="Util\ImageUtil.cs" />
+    <Compile Include="Util\IOUtil.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -162,7 +164,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="GamePage.xaml">
+    <Page Include="GamePage.Easy.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -190,6 +192,7 @@
       <Version>2.0.190315001-prerelease</Version>
     </PackageReference>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

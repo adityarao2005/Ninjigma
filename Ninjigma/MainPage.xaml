@@ -78,24 +78,30 @@
 			<Grid>
 				<TextBlock Text="No Image Added" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="{Binding ElementName=puzzleImage, Path=Source, Converter={StaticResource nullChecker}}">
 				</TextBlock>
-				<Image x:Name="puzzleImage" Source="{x:Null}" ImageFailed="puzzleImage_ImageFailed" />
+				<Image x:Name="puzzleImage" Source="{x:Null}" />
 			</Grid>
 		</Border>
 
 		<local:ContentRadioButton GroupName="difficulty" Text="Easy" Grid.Row="3" Grid.Column="4" Click="ContentRadioButton_Click" IsSelected="True">
 			<local:ContentRadioButton.Value>
-				<local:UniformGrid Rows="3" Columns="3" BorderBrush="Black" Margin="20,20,20,20" BorderThickness="2" />
+				<Viewbox Margin="20,20,20,20">
+					<local:UniformGrid Width="200" Height="200" Rows="3" Columns="3" BorderBrush="Black" BorderThickness="2" />
+				</Viewbox>
 			</local:ContentRadioButton.Value>
 		</local:ContentRadioButton>
 
 		<local:ContentRadioButton GroupName="difficulty" Text="Medium" Grid.Row="3" Grid.Column="5" Click="ContentRadioButton_Click">
 			<local:ContentRadioButton.Value>
-				<local:UniformGrid Rows="4" Columns="4" BorderBrush="Black" Margin="20,20,20,20" BorderThickness="2" />
+				<Viewbox Margin="20,20,20,20">
+					<local:UniformGrid Rows="4" Width="200" Height="200" Columns="4" BorderBrush="Black" BorderThickness="2" />
+				</Viewbox>
 			</local:ContentRadioButton.Value>
 		</local:ContentRadioButton>
 		<local:ContentRadioButton GroupName="difficulty" Text="Hard" Grid.Row="3" Grid.Column="6" Click="ContentRadioButton_Click">
 			<local:ContentRadioButton.Value>
-				<local:UniformGrid Rows="5" Columns="5" BorderBrush="Black" Margin="20,20,20,20" BorderThickness="2" />
+				<Viewbox Margin="20,20,20,20">
+					<local:UniformGrid Rows="5" Width="200" Height="200" Columns="5" BorderBrush="Black" BorderThickness="2" />
+				</Viewbox>
 			</local:ContentRadioButton.Value>
 		</local:ContentRadioButton>
 		<Button x:Name="playButton" Content="Play" HorizontalAlignment="Center" Grid.Column="6" Grid.Row="4" IsEnabled="{Binding ElementName=puzzleImage, Path=Source, Converter={StaticResource nullChecker}, ConverterParameter='boolean'}" Click="playButton_Click"/>

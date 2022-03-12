@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Ninjigma.Util;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -6,6 +7,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Networking.BackgroundTransfer;
 using Windows.Storage;
 using Windows.Storage.Pickers;
 using Windows.Storage.Streams;
@@ -19,6 +21,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
+using Windows.Web.Http;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -31,19 +34,28 @@ namespace Ninjigma
 	{
 		private Difficulty difficulty;
 
-		private ImageSource oldValue;
-		private ImageSource Image
-		{
-			get
-			{
-				return puzzleImage.Source;
-			}
-			set
-			{
-				oldValue = puzzleImage.Source;
 
-				puzzleImage.Source = value;
-			}
+		private StorageFile oldValue;
+
+
+
+		public StorageFile Image
+		{
+			get { return (StorageFile)GetValue(ImageProperty); }
+			set { SetValue(ImageProperty, value); }
+		}
+
+		// Using a DependencyProperty as the backing store for Image.  This enables animation, styling, binding, etc...
+		public static readonly DependencyProperty ImageProperty =
+			DependencyProperty.Register("Image", typeof(StorageFile), typeof(MainPage), new PropertyMetadata(null, ImageChanged));
+
+		private static void ImageChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+		{
+			MainPage page = d as MainPage;
+
+			page.oldValue = e.OldValue as StorageFile;
+
+			page.puzzleImage.Source = new BitmapImage(new Uri((e.NewValue as StorageFile).Path));
 		}
 
 		public MainPage()
@@ -94,11 +106,7 @@ namespace Ninjigma
 			StorageFile file = await openPicker.PickSingleFileAsync();
 			if (file != null)
 			{
-
-				var bitmapImg = new BitmapImage();
-				bitmapImg.SetSource(await file.OpenAsync(FileAccessMode.Read));
-
-				Image = bitmapImg;
+				Image = await IOUtil.CopyFileToLocalAsync(file);
 
 				urlBox.Text = file.Path.Replace("\\", "/");
 			}
@@ -109,53 +117,33 @@ namespace Ninjigma
 			}
 		}
 
+		//TODO: Must complete
 		private async void LoadButton_Click(object sender, RoutedEventArgs e)
 		{
-			var bitmap = new BitmapImage();
-			bool failed = false;
-			bitmap.ImageFailed += (sender0, ex) =>
+			Uri uri = new Uri(urlBox.Text);
+
+			try
 			{
-				failed = true;
-			};
-			bitmap.UriSource = new Uri(urlBox.Text);
+				StorageFile file = await IOUtil.CopyURLContentToFile(uri, mime => mime == "image/jpeg" || mime == "image/png");
 
-			if (bitmap.UriSource.IsFile)
-			{
-				try
-				{
-					// do work
-					//File.OpenRead(bitmap.UriSource.AbsolutePath)
-					var stream = File.OpenRead(bitmap.UriSource.AbsolutePath).AsRandomAccessStream();
-
-					//var file = await StorageFile.GetFileFromPathAsync(bitmap.UriSource.AbsoluteUri);
-
-					bitmap.SetSource(stream);
-				}
-				catch
-				{
-					MessageDialog dlg = new MessageDialog(
-						"It seems you have not granted permission for this app to access the file system broadly. " +
-						"Without this permission, the app will only be able to access a very limited set of filesystem locations. " +
-						"You can grant this permission in the Settings app, if you wish. You can do this now or later. " +
-						"If you change the setting while this app is running, it will terminate the app so that the " +
-						"setting can be applied. Do you want to do this now? If not then access files through the upload file option instead.",
-						"File system permissions");
-					dlg.Commands.Add(new UICommand("Yes", new UICommandInvokedHandler(InitMessageDialogHandler), 0));
-					dlg.Commands.Add(new UICommand("No", new UICommandInvokedHandler(InitMessageDialogHandler), 1));
-					dlg.DefaultCommandIndex = 0;
-					dlg.CancelCommandIndex = 1;
-					await dlg.ShowAsync();
-
-					return;
-				}
+				Image = file;
 			}
-
-			if (!failed)
-				Image = bitmap;
-			else
+			catch
 			{
-				MessageDialog message = new MessageDialog("URL does not contain image", "Error");
-				await message.ShowAsync();
+				MessageDialog dlg = new MessageDialog(
+					"It seems you have not granted permission for this app to access the file system broadly. " +
+					"Without this permission, the app will only be able to access a very limited set of filesystem locations. " +
+					"You can grant this permission in the Settings app, if you wish. You can do this now or later. " +
+					"If you change the setting while this app is running, it will terminate the app so that the " +
+					"setting can be applied. Do you want to do this now? If not then access files through the upload file option instead.",
+					"File system permissions");
+				dlg.Commands.Add(new UICommand("Yes", new UICommandInvokedHandler(this.InitMessageDialogHandler), 0));
+				dlg.Commands.Add(new UICommand("No", new UICommandInvokedHandler(this.InitMessageDialogHandler), 1));
+				dlg.DefaultCommandIndex = 0;
+				dlg.CancelCommandIndex = 1;
+				await dlg.ShowAsync();
+
+				return;
 			}
 		}
 
@@ -207,30 +195,26 @@ namespace Ninjigma
 				{
 					var storageFile = items[0] as StorageFile;
 					var contentType = storageFile.ContentType;
-					StorageFolder folder = ApplicationData.Current.LocalFolder;
 					if (contentType == "image/jpg" || contentType == "image/png" || contentType == "image/jpeg")
 					{
-						StorageFile newFile = await storageFile.CopyAsync(folder, storageFile.Name, NameCollisionOption.GenerateUniqueName);
-
-						var bitmapImg = new BitmapImage();
-						bitmapImg.SetSource(await storageFile.OpenAsync(FileAccessMode.Read));
-
-						Image = bitmapImg;
+						Image = await IOUtil.CopyFileToLocalAsync(storageFile);
 					}
 				}
 			}
 		}
 
-		private async void puzzleImage_ImageFailed(object sender, ExceptionRoutedEventArgs e)
-		{
-			Image = oldValue;
-			MessageDialog message = new MessageDialog("URL does not contain image", "Error");
-			await message.ShowAsync();
-		}
-
 		private void playButton_Click(object sender, RoutedEventArgs e)
 		{
-			Frame.Navigate(typeof(GamePage), new object[] { Image, difficulty });
+			switch (difficulty)
+			{
+				case Difficulty.EASY:
+					Frame.Navigate(typeof(GamePage_Easy), Image);
+					break;
+				case Difficulty.MEDIUM:
+					break;
+				case Difficulty.HARD:
+					break;
+			}
 		}
 	}
 }
