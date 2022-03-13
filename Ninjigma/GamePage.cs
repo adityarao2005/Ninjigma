@@ -65,7 +65,7 @@ namespace Ninjigma
 
 				new Task(async () => await source.SetBitmapAsync(SoftwareBitmap.Convert(bitmap, BitmapPixelFormat.Bgra8, BitmapAlphaMode.Premultiplied))).RunSynchronously();
 
-				if (consumer.Row < 2 || consumer.Column < 2)
+				if (consumer.Row < manager.Rows - 1 || consumer.Column < manager.Columns - 1)
 				{
 					Point point = new Point(consumer.Row, consumer.Column);
 					consumer.UserData = point;

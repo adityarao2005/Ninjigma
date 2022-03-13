@@ -128,6 +128,12 @@
     <Compile Include="GamePage.Easy.xaml.cs">
       <DependentUpon>GamePage.Easy.xaml</DependentUpon>
     </Compile>
+    <Compile Include="GamePage.Hard.xaml.cs">
+      <DependentUpon>GamePage.Hard.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GamePage.Medium.xaml.cs">
+      <DependentUpon>GamePage.Medium.xaml</DependentUpon>
+    </Compile>
     <Compile Include="GridManager.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
@@ -166,6 +172,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="GamePage.Easy.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="GamePage.Hard.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="GamePage.Medium.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

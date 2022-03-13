@@ -211,8 +211,10 @@ namespace Ninjigma
 					Frame.Navigate(typeof(GamePage_Easy), Image);
 					break;
 				case Difficulty.MEDIUM:
+					Frame.Navigate(typeof(GamePage_Medium), Image);
 					break;
 				case Difficulty.HARD:
+					Frame.Navigate(typeof(GamePage_Hard), Image);
 					break;
 			}
 		}

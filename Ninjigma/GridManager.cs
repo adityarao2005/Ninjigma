@@ -28,7 +28,14 @@ namespace Ninjigma
 		{
 			T[,] contents = new T[Rows, Columns];
 
-			this.ForEach(cell => { if (!cell.IsEmpty) { contents[cell.Row, cell.Column] = (T)cell.UserData; } });
+			this.ForEach(cell =>
+			{
+				if (!cell.IsEmpty)
+				{
+					Debug.WriteLine(cell.UserData == null ? "null" : cell.UserData.ToString());
+					contents[cell.Row, cell.Column] = (T)cell.UserData;
+				}
+			});
 
 			return contents;
 		}
@@ -121,10 +128,6 @@ namespace Ninjigma
 			{
 				get => manager.Cells.IndexOf(this);
 			}
-
-			// index = row * Grid.Columns + column
-			// index / Grid.Columns rem = column
-			// index / Grid.Columns = row
 
 			public int Row
 			{
