@@ -1,4 +1,4 @@
-﻿<local:GamePage
+﻿<Page
     x:Class="Ninjigma.GamePage_Easy"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -80,4 +80,4 @@
 			</Viewbox>
 		</winui:NavigationView>
 	</Grid>
-</local:GamePage>
+</Page>

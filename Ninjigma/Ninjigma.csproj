@@ -124,6 +124,7 @@
     </Compile>
     <Compile Include="Converters\NullChecker.cs" />
     <Compile Include="Difficulty.cs" />
+    <Compile Include="GamePage.cs" />
     <Compile Include="GamePage.Easy.xaml.cs">
       <DependentUpon>GamePage.Easy.xaml</DependentUpon>
     </Compile>
