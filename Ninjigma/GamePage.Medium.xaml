@@ -11,22 +11,20 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-	<Grid BorderThickness="1,1,1,1">
-		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="15*"/>
-		</Grid.ColumnDefinitions>
-		<Grid.RowDefinitions>
-			<RowDefinition />
-			<RowDefinition Height="15*"/>
-			<RowDefinition />
-		</Grid.RowDefinitions>
-
-
-		<winui:NavigationView Grid.Row="1" Grid.Column="1" IsSettingsVisible="False" IsBackButtonVisible="Collapsed" PaneTitle="View The Puzzle Image" PaneDisplayMode="LeftCompact" >
-			<winui:NavigationView.PaneCustomContent>
-				<Image x:Name="helpImage"/>
-			</winui:NavigationView.PaneCustomContent>
-			<Viewbox Stretch="Uniform" >
+	<winui:NavigationView IsSettingsVisible="False" PaneTitle="View The Puzzle Image" PaneDisplayMode="Auto" IsPaneOpen="False" BackRequested="NavigationView_BackRequested" IsBackEnabled="True">
+		<winui:NavigationView.PaneCustomContent>
+			<Image x:Name="helpImage"/>
+		</winui:NavigationView.PaneCustomContent>
+		<Grid>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="*"/>
+			</Grid.ColumnDefinitions>
+			<Grid.RowDefinitions>
+				<RowDefinition />
+				<RowDefinition Height="15*"/>
+				<RowDefinition />
+			</Grid.RowDefinitions>
+			<Viewbox Stretch="Uniform" Grid.Row="1" Grid.Column="1">
 				<Frame Height="300" Width="300">
 					<Grid x:Name="gameGrid" MinHeight="300" MinWidth="300" BorderThickness="1" BorderBrush="Black">
 						<Grid.ColumnDefinitions>
@@ -103,6 +101,6 @@
 					</Grid>
 				</Frame>
 			</Viewbox>
-		</winui:NavigationView>
-	</Grid>
+		</Grid>
+	</winui:NavigationView>
 </local:GamePage>

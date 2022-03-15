@@ -16,6 +16,9 @@ using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 using static Ninjigma.GridManager;
 
+using NavigationView = Microsoft.UI.Xaml.Controls.NavigationView;
+using NavigationViewBackRequestedEventArgs = Microsoft.UI.Xaml.Controls.NavigationViewBackRequestedEventArgs;
+
 namespace Ninjigma
 {
 	public abstract partial class GamePage : Page
@@ -87,6 +90,25 @@ namespace Ninjigma
 			await source_.SetBitmapAsync(SoftwareBitmap.Convert(SoftwareBitmap.Copy(Image), BitmapPixelFormat.Bgra8, BitmapAlphaMode.Premultiplied));
 			HelpImage().Source = source_;
 
+		}
+
+		public async void NavigationView_BackRequested(NavigationView sender, NavigationViewBackRequestedEventArgs args)
+		{
+			MessageDialog dialog = new MessageDialog("Do you really want to really head back?", "Alert");
+			dialog.Commands.Add(new UICommand { Label = "Yes", Id = 0 });
+			dialog.Commands.Add(new UICommand { Label = "No", Id = 1 });
+			dialog.DefaultCommandIndex = 0;
+			dialog.CancelCommandIndex = 1;
+
+			IUICommand command = await dialog.ShowAsync();
+			int id = (int)command.Id;
+
+			if (id == dialog.CancelCommandIndex)
+			{
+				return;
+			}
+
+			Frame.Navigate(typeof(MainPage));
 		}
 
 		public abstract Image HelpImage();
