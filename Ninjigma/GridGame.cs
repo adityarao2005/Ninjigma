@@ -1,6 +1,7 @@
 ﻿using Ninjigma.Util;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -30,6 +31,10 @@ namespace Ninjigma
 		}
 
 		private Point[,] originals;
+		public Point[,] Randomized
+		{
+			get; set;
+		}
 
 		// Using a DependencyProperty as the backing store for Image.  This enables animation, styling, binding, etc...
 		public static readonly DependencyProperty ImageProperty =
@@ -71,6 +76,25 @@ namespace Ninjigma
 				}
 			});
 
+			NewRandomAlgorthm();
+
+			Randomized = manager.GetUserData<Point>();
+		}
+
+		public abstract int CYCLES();
+
+		public void NewRandomAlgorthm()
+		{
+			var rnd = new Random();
+			for (int i = 0; i < CYCLES(); i++)
+			{
+				while (!TryMove(manager.CellOf(manager.Grid.Children[rnd.Next(0, manager.Grid.Children.Count())] as FrameworkElement)));
+			}
+
+		}
+
+		public void OriginalRandomizeAlgorthm()
+		{
 			var rnd = new Random();
 			var elems = new List<FrameworkElement>(manager.Grid.Children.Cast<FrameworkElement>()).OrderBy(elem => rnd.Next()).ToList();
 
@@ -79,10 +103,9 @@ namespace Ninjigma
 				Grid.SetRow(elems[i], i / manager.Rows);
 				Grid.SetColumn(elems[i], i % manager.Rows);
 			}
-
 		}
 
-		private bool started, ended;
+		private bool started, ended, paused;
 
 		public async void PieceTapped(object sender, TappedRoutedEventArgs e)
 		{
@@ -92,65 +115,16 @@ namespace Ninjigma
 				started = true;
 			}
 
-			if (ended)
+			if (ended || paused)
 			{
 				return;
 			}
-			var cell = manager.CellOf(sender as FrameworkElement);
 
 			try
 			{
-				Cell up = null;
-				Cell down = null;
-				Cell left = null;
-				Cell right = null;
-				try
-				{
-					up = manager[cell.Row - 1, cell.Column];
-				}
-				catch { up = null; }
-				try
-				{
-					down = manager[cell.Row + 1, cell.Column];
-				}
-				catch { down = null; }
-				try
-				{
-					left = manager[cell.Row, cell.Column - 1];
-				}
-				catch { left = null; }
-				try
-				{
-					right = manager[cell.Row, cell.Column + 1];
-				}
-				catch { right = null; }
+				var cell = manager.CellOf(sender as FrameworkElement);
 
-
-				if (up != null && up.IsEmpty)
-				{
-					var content = cell.Content;
-
-					Grid.SetRow(content, up.Row);
-				}
-				else if (down != null && down.IsEmpty)
-				{
-					var content = cell.Content;
-
-					Grid.SetRow(content, down.Row);
-				}
-				else if (left != null && left.IsEmpty)
-				{
-					var content = cell.Content;
-
-					Grid.SetColumn(content, left.Column);
-				}
-				else if (right != null && right.IsEmpty)
-				{
-					var content = cell.Content;
-
-					Grid.SetColumn(content, right.Column);
-				}
-				else { return; }
+				TryMove(cell);
 
 				Point[,] temps = new Point[manager.Rows, manager.Columns];
 				temps = manager.GetUserData<Point>();
@@ -174,7 +148,7 @@ namespace Ninjigma
 				{
 					GameEnded.Invoke();
 					ended = true;
-					
+
 					MessageDialog message = new MessageDialog("YOU WON!!");
 					await message.ShowAsync();
 				}
@@ -189,9 +163,77 @@ namespace Ninjigma
 			}
 		}
 
+		private bool TryMove(Cell cell)
+		{
+
+			Cell up = null;
+			Cell down = null;
+			Cell left = null;
+			Cell right = null;
+			try
+			{
+				up = manager[cell.Row - 1, cell.Column];
+			}
+			catch { up = null; }
+			try
+			{
+				down = manager[cell.Row + 1, cell.Column];
+			}
+			catch { down = null; }
+			try
+			{
+				left = manager[cell.Row, cell.Column - 1];
+			}
+			catch { left = null; }
+			try
+			{
+				right = manager[cell.Row, cell.Column + 1];
+			}
+			catch { right = null; }
+
+
+			if (up != null && up.IsEmpty)
+			{
+				var content = cell.Content;
+
+				Grid.SetRow(content, up.Row);
+			}
+			else if (down != null && down.IsEmpty)
+			{
+				var content = cell.Content;
+
+				Grid.SetRow(content, down.Row);
+			}
+			else if (left != null && left.IsEmpty)
+			{
+				var content = cell.Content;
+
+				Grid.SetColumn(content, left.Column);
+			}
+			else if (right != null && right.IsEmpty)
+			{
+				var content = cell.Content;
+
+				Grid.SetColumn(content, right.Column);
+			}
+			else { return false; }
+
+			return true;
+		}
+
 		public event Action GameStarted;
 
 		public event Action GameEnded;
+
+		public void Pause()
+		{
+			paused = true;
+		}
+
+		public void Unpause()
+		{
+			paused = false;
+		}
 
 	}
 }

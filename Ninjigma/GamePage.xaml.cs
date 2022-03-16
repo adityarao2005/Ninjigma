@@ -8,6 +8,7 @@ using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Graphics.Imaging;
 using Windows.Storage;
+using Windows.Storage.Streams;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -20,6 +21,8 @@ using Windows.UI.Xaml.Navigation;
 
 using NavigationView = Microsoft.UI.Xaml.Controls.NavigationView;
 using NavigationViewBackRequestedEventArgs = Microsoft.UI.Xaml.Controls.NavigationViewBackRequestedEventArgs;
+using System.Xml.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
 namespace Ninjigma
@@ -95,6 +98,9 @@ namespace Ninjigma
 
 		public async void NavigationView_BackRequested(NavigationView sender, NavigationViewBackRequestedEventArgs args)
 		{
+			Timer.Stop();
+			Game.Pause();
+
 			MessageDialog dialog = new MessageDialog("Do you really want to really head back?", "Alert");
 			dialog.Commands.Add(new UICommand { Label = "Yes", Id = 0 });
 			dialog.Commands.Add(new UICommand { Label = "No", Id = 1 });
@@ -106,11 +112,37 @@ namespace Ninjigma
 
 			if (id == dialog.CancelCommandIndex)
 			{
+				Game.Unpause();
+				Timer.Start();
 				return;
 			}
 
 			Frame.Navigate(typeof(MainPage));
 		}
 
+		private async void MarkUnsolvable(object sender, RoutedEventArgs e)
+		{
+			Timer.Stop();
+			Game.Pause();
+
+
+			MessageDialog dialog = new MessageDialog("Are you sure you cannot solve this?", "Alert");
+			dialog.Commands.Add(new UICommand { Label = "Yes", Id = 0 });
+			dialog.Commands.Add(new UICommand { Label = "No", Id = 1 });
+			dialog.DefaultCommandIndex = 0;
+			dialog.CancelCommandIndex = 1;
+
+			IUICommand command = await dialog.ShowAsync();
+			int id = (int)command.Id;
+
+			if (id == dialog.CancelCommandIndex)
+			{
+				Game.Unpause();
+				Timer.Start();
+				return;
+			}
+		}
+
+		
 	}
 }

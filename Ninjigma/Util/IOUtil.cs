@@ -41,6 +41,9 @@ namespace Ninjigma.Util
 			}
 		}
 
-
+		public static async Task<StorageFile> CreateIfNotExists(string name)
+		{
+			return await ApplicationData.Current.LocalFolder.CreateFileAsync(name, CreationCollisionOption.OpenIfExists);
+		}
 	}
 }

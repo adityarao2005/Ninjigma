@@ -35,5 +35,10 @@ namespace Ninjigma
 		{
 			this.InitializeComponent();
 		}
+
+		public override int CYCLES()
+		{
+			return 100;
+		}
 	}
 }

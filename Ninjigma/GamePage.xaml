@@ -24,9 +24,10 @@
 				<RowDefinition Height="15*"/>
 				<RowDefinition />
 			</Grid.RowDefinitions>
-			<RelativePanel VerticalAlignment="Center" HorizontalAlignment="Right">
-				<TextBlock Margin="1, 0, 5, 0" x:Name="Time" Text="0:00:00" RelativePanel.AlignRightWithPanel="True" />
-				<TextBlock Text="Time Taken:" RelativePanel.LeftOf="Time" />
+			<RelativePanel VerticalAlignment="Center">
+				<Button Margin="5, 0, 1, 0" Click="MarkUnsolvable" Content="Mark Unsolvable"/>
+				<TextBlock Margin="1, 0, 5, 0" x:Name="Time" Text="0:00:00" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True" />
+				<TextBlock Text="Time Taken:" RelativePanel.LeftOf="Time" RelativePanel.AlignVerticalCenterWithPanel="True" />
 			</RelativePanel>
 			<Viewbox Stretch="Uniform" Grid.Row="1" Grid.Column="1">
 				<Frame Height="300" Width="300" x:Name="gameFrame"/>
