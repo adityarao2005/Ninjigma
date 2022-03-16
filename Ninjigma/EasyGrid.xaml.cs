@@ -20,20 +20,15 @@ namespace Ninjigma
 	/// <summary>
 	/// An empty page that can be used on its own or navigated to within a Frame.
 	/// </summary>
-	public sealed partial class GamePage_Medium : GamePage
+	public sealed partial class EasyGrid : GridGame
 	{
-		public GamePage_Medium() : base()
+		public EasyGrid() : base()
 		{
 		}
 
 		public override Grid GameGrid()
 		{
 			return gameGrid;
-		}
-
-		public override Image HelpImage()
-		{
-			return helpImage;
 		}
 
 		public override void Initialize()

@@ -32,7 +32,7 @@ namespace Ninjigma
 	/// </summary>
 	public sealed partial class MainPage : Page
 	{
-		private Difficulty difficulty;
+		private Difficulty difficulty = Difficulty.EASY;
 
 
 		private StorageFile oldValue;
@@ -205,18 +205,21 @@ namespace Ninjigma
 
 		private void playButton_Click(object sender, RoutedEventArgs e)
 		{
-			switch (difficulty)
-			{
-				case Difficulty.EASY:
-					Frame.Navigate(typeof(GamePage_Easy), Image);
-					break;
-				case Difficulty.MEDIUM:
-					Frame.Navigate(typeof(GamePage_Medium), Image);
-					break;
-				case Difficulty.HARD:
-					Frame.Navigate(typeof(GamePage_Hard), Image);
-					break;
-			}
+			object[] args = new object[] { Image, difficulty };
+
+			Frame.Navigate(typeof(GamePage), args);
+			//switch (difficulty)
+			//{
+			//	case Difficulty.EASY:
+			//		Frame.Navigate(typeof(GamePage_Easy), Image);
+			//		break;
+			//	case Difficulty.MEDIUM:
+			//		Frame.Navigate(typeof(GamePage_Medium), Image);
+			//		break;
+			//	case Difficulty.HARD:
+			//		Frame.Navigate(typeof(GamePage_Hard), Image);
+			//		break;
+			//}
 		}
 	}
 }

@@ -124,19 +124,22 @@
     </Compile>
     <Compile Include="Converters\NullChecker.cs" />
     <Compile Include="Difficulty.cs" />
-    <Compile Include="GamePage.cs" />
-    <Compile Include="GamePage.Easy.xaml.cs">
-      <DependentUpon>GamePage.Easy.xaml</DependentUpon>
+    <Compile Include="EasyGrid.xaml.cs">
+      <DependentUpon>EasyGrid.xaml</DependentUpon>
     </Compile>
-    <Compile Include="GamePage.Hard.xaml.cs">
-      <DependentUpon>GamePage.Hard.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="GamePage.Medium.xaml.cs">
-      <DependentUpon>GamePage.Medium.xaml</DependentUpon>
+    <Compile Include="GamePage.xaml.cs">
+      <DependentUpon>GamePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="GridManager.cs" />
+    <Compile Include="GridGame.cs" />
+    <Compile Include="HardGrid.xaml.cs">
+      <DependentUpon>HardGrid.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MediumGrid.xaml.cs">
+      <DependentUpon>MediumGrid.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UniformGrid.xaml.cs">
@@ -171,15 +174,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="GamePage.Easy.xaml">
+    <Page Include="EasyGrid.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="GamePage.Hard.xaml">
+    <Page Include="GamePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="GamePage.Medium.xaml">
+    <Page Include="HardGrid.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MediumGrid.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

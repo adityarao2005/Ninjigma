@@ -16,13 +16,7 @@ namespace Ninjigma
 	{
 		private List<Cell> cells;
 
-		public IList<Cell> Cells
-		{
-			get
-			{
-				return cells.AsReadOnly();
-			}
-		}
+		public IList<Cell> Cells => cells.AsReadOnly();
 
 		public T[,] GetUserData<T>()
 		{
@@ -45,21 +39,9 @@ namespace Ninjigma
 			get;
 		}
 
-		public int Rows
-		{
-			get
-			{
-				return Grid.RowDefinitions.Count;
-			}
-		}
+		public int Rows => Grid.RowDefinitions.Count;
 
-		public int Columns
-		{
-			get
-			{
-				return Grid.ColumnDefinitions.Count;
-			}
-		}
+		public int Columns => Grid.ColumnDefinitions.Count;
 
 		public GridManager(Grid grid)
 		{
@@ -124,10 +106,7 @@ namespace Ninjigma
 
 		public class Cell
 		{
-			public int Index
-			{
-				get => manager.Cells.IndexOf(this);
-			}
+			public int Index => manager.Cells.IndexOf(this);
 
 			public int Row
 			{
@@ -139,10 +118,7 @@ namespace Ninjigma
 				get; set;
 			}
 
-			public bool IsEmpty
-			{
-				get => Content == null;
-			}
+			public bool IsEmpty => Content == null;
 
 			public object UserData
 			{

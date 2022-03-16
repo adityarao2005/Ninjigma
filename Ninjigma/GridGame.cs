@@ -1,7 +1,6 @@
 ﻿using Ninjigma.Util;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,12 +15,9 @@ using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 using static Ninjigma.GridManager;
 
-using NavigationView = Microsoft.UI.Xaml.Controls.NavigationView;
-using NavigationViewBackRequestedEventArgs = Microsoft.UI.Xaml.Controls.NavigationViewBackRequestedEventArgs;
-
 namespace Ninjigma
 {
-	public abstract partial class GamePage : Page
+	public abstract class GridGame : Page
 	{
 		public abstract Grid GameGrid();
 
@@ -37,10 +33,10 @@ namespace Ninjigma
 
 		// Using a DependencyProperty as the backing store for Image.  This enables animation, styling, binding, etc...
 		public static readonly DependencyProperty ImageProperty =
-			DependencyProperty.Register("Image", typeof(SoftwareBitmap), typeof(GamePage_Easy), new PropertyMetadata(null));
+			DependencyProperty.Register("Image", typeof(SoftwareBitmap), typeof(GridGame), new PropertyMetadata(null));
 
 
-		public GamePage()
+		public GridGame()
 		{
 			Initialize();
 			manager = new GridManager(GameGrid());
@@ -52,9 +48,7 @@ namespace Ninjigma
 		{
 			base.OnNavigatedTo(e);
 
-			StorageFile file = e.Parameter as StorageFile;
-
-			Image = await ImageUtil.FromFile(file);
+			Image = e.Parameter as SoftwareBitmap;
 
 			SoftwareBitmap[,] bitmaps = await ImageUtil.Split(ImageUtil.Copy(Image), manager.Rows, manager.Columns);
 
@@ -86,34 +80,9 @@ namespace Ninjigma
 				Grid.SetColumn(elems[i], i % manager.Rows);
 			}
 
-			SoftwareBitmapSource source_ = new SoftwareBitmapSource();
-			await source_.SetBitmapAsync(SoftwareBitmap.Convert(SoftwareBitmap.Copy(Image), BitmapPixelFormat.Bgra8, BitmapAlphaMode.Premultiplied));
-			HelpImage().Source = source_;
-
 		}
 
-		public async void NavigationView_BackRequested(NavigationView sender, NavigationViewBackRequestedEventArgs args)
-		{
-			MessageDialog dialog = new MessageDialog("Do you really want to really head back?", "Alert");
-			dialog.Commands.Add(new UICommand { Label = "Yes", Id = 0 });
-			dialog.Commands.Add(new UICommand { Label = "No", Id = 1 });
-			dialog.DefaultCommandIndex = 0;
-			dialog.CancelCommandIndex = 1;
-
-			IUICommand command = await dialog.ShowAsync();
-			int id = (int)command.Id;
-
-			if (id == dialog.CancelCommandIndex)
-			{
-				return;
-			}
-
-			Frame.Navigate(typeof(MainPage));
-		}
-
-		public abstract Image HelpImage();
-
-		protected async void PieceTapped(object sender, TappedRoutedEventArgs e)
+		public async void PieceTapped(object sender, TappedRoutedEventArgs e)
 		{
 			var cell = manager.CellOf(sender as FrameworkElement);
 
@@ -204,6 +173,5 @@ namespace Ninjigma
 				throw ex;
 			}
 		}
-
 	}
 }
