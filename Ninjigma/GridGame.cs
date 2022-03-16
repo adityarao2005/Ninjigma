@@ -82,8 +82,20 @@ namespace Ninjigma
 
 		}
 
+		private bool started, ended;
+
 		public async void PieceTapped(object sender, TappedRoutedEventArgs e)
 		{
+			if (!started)
+			{
+				GameStarted.Invoke();
+				started = true;
+			}
+
+			if (ended)
+			{
+				return;
+			}
 			var cell = manager.CellOf(sender as FrameworkElement);
 
 			try
@@ -160,6 +172,9 @@ namespace Ninjigma
 
 				if (isEqual)
 				{
+					GameEnded.Invoke();
+					ended = true;
+					
 					MessageDialog message = new MessageDialog("YOU WON!!");
 					await message.ShowAsync();
 				}
@@ -173,5 +188,10 @@ namespace Ninjigma
 				throw ex;
 			}
 		}
+
+		public event Action GameStarted;
+
+		public event Action GameEnded;
+
 	}
 }

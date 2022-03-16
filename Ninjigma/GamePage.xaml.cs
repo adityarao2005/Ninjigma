@@ -29,7 +29,7 @@ namespace Ninjigma
 	/// </summary>
 	public sealed partial class GamePage : Page
 	{
-
+		private DispatcherTimer Timer = new DispatcherTimer();
 
 		public SoftwareBitmap Image
 		{
@@ -41,9 +41,22 @@ namespace Ninjigma
 		public static readonly DependencyProperty ImageProperty =
 			DependencyProperty.Register("Image", typeof(SoftwareBitmap), typeof(GamePage), new PropertyMetadata(null));
 
+		public GridGame Game => gameFrame.Content as GridGame;
+
 		public GamePage()
 		{
 			this.InitializeComponent();
+
+
+			Timer.Tick += Timer_Tick;
+			Timer.Interval = new TimeSpan(0, 0, 1);
+		}
+
+		private TimeSpan time = new TimeSpan(0, 0, 0);
+		private void Timer_Tick(object sender, object e)
+		{
+			time += Timer.Interval;
+			Time.Text = new DateTime(time.Ticks).ToString("H:mm:ss");
 		}
 
 		protected override async void OnNavigatedTo(NavigationEventArgs e)
@@ -74,6 +87,10 @@ namespace Ninjigma
 					gameFrame.Navigate(typeof(HardGrid), Image);
 					break;
 			}
+
+
+			Game.GameStarted += Timer.Start;
+			Game.GameEnded += Timer.Stop;
 		}
 
 		public async void NavigationView_BackRequested(NavigationView sender, NavigationViewBackRequestedEventArgs args)
