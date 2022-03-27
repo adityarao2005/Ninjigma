@@ -1,7 +1,9 @@
 ﻿using Ninjigma.Util;
+using Ninjigma.Util.Structures;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,6 +22,7 @@ namespace Ninjigma
 {
 	public abstract class GridGame : Page
 	{
+
 		public abstract Grid GameGrid();
 
 		private GridManager manager;
@@ -30,8 +33,8 @@ namespace Ninjigma
 			set { SetValue(ImageProperty, value); }
 		}
 
-		private Point[,] originals;
-		public Point[,] Randomized
+		private Point?[,] originals;
+		public Point?[,] Randomized
 		{
 			get; set;
 		}
@@ -58,7 +61,7 @@ namespace Ninjigma
 			SoftwareBitmap[,] bitmaps = await ImageUtil.Split(ImageUtil.Copy(Image), manager.Rows, manager.Columns);
 
 
-			originals = new Point[manager.Rows, manager.Columns];
+			originals = new Point?[manager.Rows, manager.Columns];
 			manager.ForEach((consumer) =>
 			{
 
@@ -78,20 +81,60 @@ namespace Ninjigma
 
 			NewRandomAlgorthm();
 
-			Randomized = manager.GetUserData<Point>();
+			Randomized = manager.GetUserData<Point?>();
 		}
 
 		public abstract int CYCLES();
 
 		public void NewRandomAlgorthm()
 		{
+			Matrix<Point?> points = new Matrix<Point?>(originals);
+			points.Print();
+
 			var rnd = new Random();
+
+			int rows = manager.Rows;
+			int columns = manager.Columns;
 			for (int i = 0; i < CYCLES(); i++)
 			{
-				while (!TryMove(manager.CellOf(manager.Grid.Children[rnd.Next(0, manager.Grid.Children.Count())] as FrameworkElement)));
+				//Effective yet time consuming
+				//while (!TryMove(manager.CellOf(manager.Grid.Children[rnd.Next(0, manager.Grid.Children.Count())] as FrameworkElement))) ;
+				//More efficient to render all at once required
+
+
+				do
+				{
+					Indexer indexer = new Indexer() { Row = rnd.Next(0, points.Rows), Column = rnd.Next(0, points.Columns) };
+
+					if (points.SwapUp(indexer)) break;
+					if (points.SwapDown(indexer)) break;
+					if (points.SwapLeft(indexer)) break;
+					if (points.SwapRight(indexer)) break;
+
+				} while (true);
+
+
 			}
 
+			points.Print();
+
+
+			// Use dictorary to map coordinates then assign new ones
+			Dictionary<FrameworkElement, Indexer> map = new Dictionary<FrameworkElement, Indexer>();
+
+			manager.Grid.Children.ForEach(elem => map.Add(elem as FrameworkElement, points.IndexOf(new Point() { X = Grid.GetRow(elem as FrameworkElement), Y = Grid.GetColumn(elem as FrameworkElement) })));
+
+			map.ForEach(pair =>
+			{
+				FrameworkElement element = pair.Key;
+				Indexer index = pair.Value;
+
+				Grid.SetRow(element, index.Row);
+				Grid.SetColumn(element, index.Column);
+			});
 		}
+
+
 
 		public void OriginalRandomizeAlgorthm()
 		{
@@ -126,17 +169,20 @@ namespace Ninjigma
 
 				TryMove(cell);
 
-				Point[,] temps = new Point[manager.Rows, manager.Columns];
-				temps = manager.GetUserData<Point>();
+				Point?[,] temps = new Point?[manager.Rows, manager.Columns];
+				temps = manager.GetUserData<Point?>();
 
 				bool isEqual = true;
 				for (int counter1 = 0; counter1 < temps.GetLength(0); counter1++)
 				{
 					for (int counter2 = 0; counter2 < originals.GetLength(1); counter2++)
 					{
-						Point Current = temps[counter1, counter2];
-						Point Supposed = originals[counter1, counter2];
-						if (Current != Supposed)
+						Point? Current = temps[counter1, counter2];
+						Point? Supposed = originals[counter1, counter2];
+
+						if (Current == Supposed) { }
+						else if (Current != null && Supposed != null && Current.Equals(Supposed)) { }
+						else
 						{
 							isEqual = false;
 							break;

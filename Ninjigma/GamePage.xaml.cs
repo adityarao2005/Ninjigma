@@ -30,47 +30,60 @@ namespace Ninjigma
 	/// <summary>
 	/// An empty page that can be used on its own or navigated to within a Frame.
 	/// </summary>
+	// The game page. Where the grid gets initialized and the player plays.
 	public sealed partial class GamePage : Page
 	{
+		// Counting timer
 		private DispatcherTimer Timer = new DispatcherTimer();
 
+		// The image
 		public SoftwareBitmap Image
 		{
 			get { return (SoftwareBitmap)GetValue(ImageProperty); }
 			set { SetValue(ImageProperty, value); }
 		}
 
-		// Using a DependencyProperty as the backing store for Image.  This enables animation, styling, binding, etc...
+		// The Image as a property 
 		public static readonly DependencyProperty ImageProperty =
 			DependencyProperty.Register("Image", typeof(SoftwareBitmap), typeof(GamePage), new PropertyMetadata(null));
 
+		// The actual game
 		public GridGame Game => gameFrame.Content as GridGame;
 
 		public GamePage()
 		{
+			// initialize xaml
 			this.InitializeComponent();
 
-
+			// Set the ticker
 			Timer.Tick += Timer_Tick;
+			// Tick every 1s
 			Timer.Interval = new TimeSpan(0, 0, 1);
 		}
 
+		// the time
 		private TimeSpan time = new TimeSpan(0, 0, 0);
 		private void Timer_Tick(object sender, object e)
 		{
+			// increment the time
 			time += Timer.Interval;
+			// Set the text to time to formatted as H:mm:ss
 			Time.Text = new DateTime(time.Ticks).ToString("H:mm:ss");
 		}
 
 		protected override async void OnNavigatedTo(NavigationEventArgs e)
 		{
+			// Render content
 			base.OnNavigatedTo(e);
 
+			// get navigation parameters
 			object[] param = e.Parameter as object[];
 
+			// get the file image and difficulty from the params
 			StorageFile file = param[0] as StorageFile;
-			Difficulty difficulty = (Difficulty) param[1];
+			Difficulty difficulty = (Difficulty)param[1];
 
+			//
 			Image = await ImageUtil.FromFile(file);
 
 			SoftwareBitmapSource source_ = new SoftwareBitmapSource();
@@ -141,8 +154,11 @@ namespace Ninjigma
 				Timer.Start();
 				return;
 			}
+
+			Frame.Navigate(typeof(MainPage));
+
 		}
 
-		
+
 	}
 }

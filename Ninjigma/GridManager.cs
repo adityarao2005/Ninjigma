@@ -26,7 +26,6 @@ namespace Ninjigma
 			{
 				if (!cell.IsEmpty)
 				{
-					Debug.WriteLine(cell.UserData == null ? "null" : cell.UserData.ToString());
 					contents[cell.Row, cell.Column] = (T)cell.UserData;
 				}
 			});

@@ -12,40 +12,50 @@ using Buffer = Windows.Storage.Streams.Buffer;
 
 namespace Ninjigma.Util
 {
+	// Utitilty class for manipulating Images
 	public static class ImageUtil
 	{
 
+		// Get image from file
 		public static async Task<SoftwareBitmap> FromFile(StorageFile file)
 		{
+			// Decode the bitmap from file stream
 			BitmapDecoder decoder = await BitmapDecoder.CreateAsync(await file.OpenAsync(FileAccessMode.Read));
 
 			return await decoder.GetSoftwareBitmapAsync();
 
 		}
 
+		// Copy one bitmap to the other
 		public static SoftwareBitmap Copy(SoftwareBitmap bitmap)
 		{
+			// create the other
 			SoftwareBitmap newB = new SoftwareBitmap(bitmap.BitmapPixelFormat, bitmap.PixelWidth, bitmap.PixelHeight);
-
+			// Copy
 			bitmap.CopyTo(newB);
-
+			// Return
 			return newB;
 		}
 
+		// Crop a copy of the bitmap
 		public static async Task<SoftwareBitmap> Crop(SoftwareBitmap bitmap, BitmapBounds rectangle)
 		{
+			// Create a new inmemory stream to store the copy
 			using (InMemoryRandomAccessStream stream = new InMemoryRandomAccessStream())
 			{
+				// Create the encoder
 				BitmapEncoder encoder = await BitmapEncoder.CreateAsync(BitmapEncoder.PngEncoderId, stream);
-
+				// encode the bitmap
 				encoder.SetSoftwareBitmap(bitmap);
-
+				// flush the stream
 				await encoder.FlushAsync();
 
+				// Decode from stream
 				BitmapDecoder decoder = await BitmapDecoder.CreateAsync(stream);
 
+				// Crop the decoded copy
 				SoftwareBitmap newB = await decoder.GetSoftwareBitmapAsync(bitmap.BitmapPixelFormat, bitmap.BitmapAlphaMode, new BitmapTransform { Bounds = rectangle }, ExifOrientationMode.IgnoreExifOrientation, ColorManagementMode.DoNotColorManage);
-
+				// return copy
 				return newB;
 			}
 		}

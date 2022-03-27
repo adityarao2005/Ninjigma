@@ -148,6 +148,8 @@
     <Compile Include="Util\ArrayUtil.cs" />
     <Compile Include="Util\ImageUtil.cs" />
     <Compile Include="Util\IOUtil.cs" />
+    <Compile Include="Util\NumericUtil.cs" />
+    <Compile Include="Util\Structures\Matrix.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
