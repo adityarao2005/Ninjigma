@@ -71,45 +71,70 @@ namespace Ninjigma.Util.Structures
 			return 0 <= index.Row && index.Row < Rows && 0 <= index.Column && index.Column < Columns;
 		}
 
-		public bool SwapUp(Indexer index)
+		public bool SwapUp(Indexer index, Predicate<T> predicate = null)
 		{
 			if (index.Row == 0 || !Validate(index))
 			{
 				return false;
 			}
+			Indexer indexer = new Indexer() { Row = index.Row - 1, Column = index.Column };
 
-			Swap(index, new Indexer() { Row = index.Row - 1, Column = index.Column });
+			if (predicate != null)
+				if (!predicate(this[indexer]))
+					return false;
+
+			Swap(index, indexer);
 
 			return true;
 		}
 
-		public bool SwapDown(Indexer index)
+		public bool SwapDown(Indexer index, Predicate<T> predicate = null)
 		{
 			if (index.Row == Rows - 1 || !Validate(index))
 				return false;
 
-			Swap(index, new Indexer() { Row = index.Row + 1, Column = index.Column });
+			Indexer indexer = new Indexer() { Row = index.Row + 1, Column = index.Column };
+
+			if (predicate != null)
+				if (!predicate(this[indexer]))
+					return false;
+
+			Swap(index, indexer);
 
 			return true;
 		}
 
 
-		public bool SwapLeft(Indexer index)
+		public bool SwapLeft(Indexer index, Predicate<T> predicate = null)
 		{
 			if (index.Column == 0 || !Validate(index))
 				return false;
 
-			Swap(index, new Indexer() { Column = index.Column - 1, Row = index.Row });
+			Indexer indexer = new Indexer() { Column = index.Column - 1, Row = index.Row };
+
+
+
+			if (predicate != null)
+				if (!predicate(this[indexer]))
+					return false;
+
+			Swap(index, indexer);
 
 			return true;
 		}
 
-		public bool SwapRight(Indexer index)
+		public bool SwapRight(Indexer index, Predicate<T> predicate = null)
 		{
 			if (index.Column == Columns - 1 || !Validate(index))
 				return false;
 
-			Swap(index, new Indexer() { Column = index.Column + 1, Row = index.Row });
+			Indexer indexer = new Indexer() { Column = index.Column + 1, Row = index.Row };
+
+			if (predicate != null)
+				if (!predicate(this[indexer]))
+					return false;
+
+			Swap(index, indexer);
 
 			return true;
 		}

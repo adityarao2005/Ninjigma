@@ -77,7 +77,7 @@ namespace Ninjigma
 			base.OnNavigatedTo(e);
 
 			// get navigation parameters
-			object[] param = e.Parameter as object[];
+			param = e.Parameter as object[];
 
 			// get the file image and difficulty from the params
 			StorageFile file = param[0] as StorageFile;
@@ -109,6 +109,8 @@ namespace Ninjigma
 			Game.GameEnded += Timer.Stop;
 		}
 
+		object[] param;
+
 		public async void NavigationView_BackRequested(NavigationView sender, NavigationViewBackRequestedEventArgs args)
 		{
 			Timer.Stop();
@@ -133,29 +135,31 @@ namespace Ninjigma
 			Frame.Navigate(typeof(MainPage));
 		}
 
-		private async void MarkUnsolvable(object sender, RoutedEventArgs e)
+		private async void Restart(object sender, RoutedEventArgs e)
 		{
-			Timer.Stop();
-			Game.Pause();
-
-
-			MessageDialog dialog = new MessageDialog("Are you sure you cannot solve this?", "Alert");
-			dialog.Commands.Add(new UICommand { Label = "Yes", Id = 0 });
-			dialog.Commands.Add(new UICommand { Label = "No", Id = 1 });
-			dialog.DefaultCommandIndex = 0;
-			dialog.CancelCommandIndex = 1;
-
-			IUICommand command = await dialog.ShowAsync();
-			int id = (int)command.Id;
-
-			if (id == dialog.CancelCommandIndex)
+			if (!Game.HasEnded)
 			{
-				Game.Unpause();
-				Timer.Start();
-				return;
-			}
+				Timer.Stop();
+				Game.Pause();
 
-			Frame.Navigate(typeof(MainPage));
+
+				MessageDialog dialog = new MessageDialog("Are you sure you want to restart?", "Alert");
+				dialog.Commands.Add(new UICommand { Label = "Yes", Id = 0 });
+				dialog.Commands.Add(new UICommand { Label = "No", Id = 1 });
+				dialog.DefaultCommandIndex = 0;
+				dialog.CancelCommandIndex = 1;
+
+				IUICommand command = await dialog.ShowAsync();
+				int id = (int)command.Id;
+
+				if (id == dialog.CancelCommandIndex)
+				{
+					Game.Unpause();
+					Timer.Start();
+					return;
+				}
+			}
+			Frame.Navigate(typeof(GamePage), param);
 
 		}
 

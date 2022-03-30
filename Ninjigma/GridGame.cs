@@ -106,10 +106,12 @@ namespace Ninjigma
 				{
 					Indexer indexer = new Indexer() { Row = rnd.Next(0, points.Rows), Column = rnd.Next(0, points.Columns) };
 
-					if (points.SwapUp(indexer)) break;
-					if (points.SwapDown(indexer)) break;
-					if (points.SwapLeft(indexer)) break;
-					if (points.SwapRight(indexer)) break;
+					Predicate<Point?> predicate = (t) => t == null;
+
+					if (points.SwapUp(indexer, predicate)) break;
+					if (points.SwapDown(indexer, predicate)) break;
+					if (points.SwapLeft(indexer, predicate)) break;
+					if (points.SwapRight(indexer, predicate)) break;
 
 				} while (true);
 
@@ -149,6 +151,8 @@ namespace Ninjigma
 		}
 
 		private bool started, ended, paused;
+
+		public bool HasEnded => ended;
 
 		public async void PieceTapped(object sender, TappedRoutedEventArgs e)
 		{

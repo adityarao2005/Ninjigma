@@ -25,7 +25,7 @@
 				<RowDefinition />
 			</Grid.RowDefinitions>
 			<RelativePanel VerticalAlignment="Center">
-				<Button Margin="5, 0, 1, 0" Click="MarkUnsolvable" Content="Mark Unsolvable"/>
+				<Button Margin="5, 0, 1, 0" Click="Restart" Content="Restart"/>
 				<TextBlock Margin="1, 0, 5, 0" x:Name="Time" Text="0:00:00" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True" />
 				<TextBlock Text="Time Taken:" RelativePanel.LeftOf="Time" RelativePanel.AlignVerticalCenterWithPanel="True" />
 			</RelativePanel>
