@@ -11,6 +11,7 @@
     mc:Ignorable="d" Width="{x:Bind Path=Frame.Width}" Height="{x:Bind Path=Frame.Height}" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 	<Page.Resources>
 		<converters:NullChecker x:Key="nullChecker" />
+		<x:String x:Key="titleString">Drop or upload an image and then press play</x:String>
 	</Page.Resources>
 
 	<Grid>
@@ -81,30 +82,57 @@
 				<Image x:Name="puzzleImage" Source="{x:Null}" />
 			</Grid>
 		</Border>
+		<Grid Grid.Row="3" Grid.Column="4" Grid.ColumnSpan="3">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="*" />
+				<RowDefinition Height="10*" />
+			</Grid.RowDefinitions>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition />
+				<ColumnDefinition />
+				<ColumnDefinition />
+			</Grid.ColumnDefinitions>
+			<TextBlock Text="Choose your Difficulty" HorizontalAlignment="Center" Grid.ColumnSpan="3" FontSize="20" FontWeight="Medium" />
+			<local:ContentRadioButton GroupName="difficulty" Text="Easy" Grid.Row="1" Click="ContentRadioButton_Click" IsSelected="True">
+				<local:ContentRadioButton.Value>
+					<Viewbox Margin="20,20,20,20">
+						<local:UniformGrid Width="200" Height="200" Rows="3" Columns="3" BorderBrush="Black" BorderThickness="2" />
+					</Viewbox>
+				</local:ContentRadioButton.Value>
+			</local:ContentRadioButton>
 
-		<local:ContentRadioButton GroupName="difficulty" Text="Easy" Grid.Row="3" Grid.Column="4" Click="ContentRadioButton_Click" IsSelected="True">
-			<local:ContentRadioButton.Value>
-				<Viewbox Margin="20,20,20,20">
-					<local:UniformGrid Width="200" Height="200" Rows="3" Columns="3" BorderBrush="Black" BorderThickness="2" />
-				</Viewbox>
-			</local:ContentRadioButton.Value>
-		</local:ContentRadioButton>
-
-		<local:ContentRadioButton GroupName="difficulty" Text="Medium" Grid.Row="3" Grid.Column="5" Click="ContentRadioButton_Click">
-			<local:ContentRadioButton.Value>
-				<Viewbox Margin="20,20,20,20">
-					<local:UniformGrid Rows="4" Width="200" Height="200" Columns="4" BorderBrush="Black" BorderThickness="2" />
-				</Viewbox>
-			</local:ContentRadioButton.Value>
-		</local:ContentRadioButton>
-		<local:ContentRadioButton GroupName="difficulty" Text="Hard" Grid.Row="3" Grid.Column="6" Click="ContentRadioButton_Click">
-			<local:ContentRadioButton.Value>
-				<Viewbox Margin="20,20,20,20">
-					<local:UniformGrid Rows="5" Width="200" Height="200" Columns="5" BorderBrush="Black" BorderThickness="2" />
-				</Viewbox>
-			</local:ContentRadioButton.Value>
-		</local:ContentRadioButton>
+			<local:ContentRadioButton GroupName="difficulty" Text="Medium" Grid.Row="1" Grid.Column="1" Click="ContentRadioButton_Click">
+				<local:ContentRadioButton.Value>
+					<Viewbox Margin="20,20,20,20">
+						<local:UniformGrid Rows="4" Width="200" Height="200" Columns="4" BorderBrush="Black" BorderThickness="2" />
+					</Viewbox>
+				</local:ContentRadioButton.Value>
+			</local:ContentRadioButton>
+			<local:ContentRadioButton GroupName="difficulty" Text="Hard" Grid.Row="1" Grid.Column="2" Click="ContentRadioButton_Click">
+				<local:ContentRadioButton.Value>
+					<Viewbox Margin="20,20,20,20">
+						<local:UniformGrid Rows="5" Width="200" Height="200" Columns="5" BorderBrush="Black" BorderThickness="2" />
+					</Viewbox>
+				</local:ContentRadioButton.Value>
+			</local:ContentRadioButton>
+		</Grid>
 		<Button x:Name="playButton" Content="Play" HorizontalAlignment="Center" Grid.Column="6" Grid.Row="4" IsEnabled="{Binding ElementName=puzzleImage, Path=Source, Converter={StaticResource nullChecker}, ConverterParameter='boolean'}" Click="playButton_Click"/>
 
+		<Grid Grid.RowSpan="3" Grid.Row="0" Grid.ColumnSpan="4" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5">
+			<Grid.RenderTransform>
+				<CompositeTransform Rotation="-30" TranslateY="0"/>
+			</Grid.RenderTransform>
+			<TextBlock Text="{StaticResource titleString}" FontWeight="Black" FontSize="51" TextWrapping="WrapWholeWords" Foreground="Black" HorizontalAlignment="Center"></TextBlock>
+			<TextBlock Text="{StaticResource titleString}" FontWeight="Black" FontSize="50" TextWrapping="WrapWholeWords" Foreground="Black" HorizontalAlignment="Center"></TextBlock>
+			<TextBlock Text="{StaticResource titleString}" FontWeight="Black" FontSize="52" TextWrapping="WrapWholeWords" Foreground="Black" HorizontalAlignment="Center" RenderTransformOrigin="0.5,0.5">
+				<TextBlock.RenderTransform>
+					<CompositeTransform TranslateY="-2"/>
+				</TextBlock.RenderTransform></TextBlock>
+			<TextBlock Text="{StaticResource titleString}" FontWeight="Black" FontSize="52" TextWrapping="WrapWholeWords" Foreground="Black" HorizontalAlignment="Center" RenderTransformOrigin="0.5,0.5">
+				<TextBlock.RenderTransform>
+					<CompositeTransform TranslateY="2"/>
+				</TextBlock.RenderTransform></TextBlock>
+			<TextBlock Text="{StaticResource titleString}" FontWeight="Bold" FontSize="52" TextWrapping="WrapWholeWords" Foreground="Yellow" HorizontalAlignment="Center"></TextBlock>
+		</Grid>
 	</Grid>
 </Page>
