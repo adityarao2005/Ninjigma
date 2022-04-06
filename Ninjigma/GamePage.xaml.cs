@@ -83,14 +83,16 @@ namespace Ninjigma
 			StorageFile file = param[0] as StorageFile;
 			Difficulty difficulty = (Difficulty)param[1];
 
-			//
+			// Get the image from the file
 			Image = await ImageUtil.FromFile(file);
 
+			// Creates the source of the software bitmap
 			SoftwareBitmapSource source_ = new SoftwareBitmapSource();
+			// Set the image of the help image to the software bitmap
 			await source_.SetBitmapAsync(SoftwareBitmap.Convert(SoftwareBitmap.Copy(Image), BitmapPixelFormat.Bgra8, BitmapAlphaMode.Premultiplied));
 			helpImage.Source = source_;
 
-
+			// Navigate to the set difficulty page with the image
 			switch (difficulty)
 			{
 				case Difficulty.EASY:
@@ -104,61 +106,81 @@ namespace Ninjigma
 					break;
 			}
 
-
+			// Set the events of game started and stopped
 			Game.GameStarted += Timer.Start;
 			Game.GameEnded += Timer.Stop;
 		}
 
+		// copy of the parameters
 		object[] param;
 
+		// Called if the back button is pressed. It will check if the user realy wants
+		// to quit the game. If not the game resumes.
 		public async void NavigationView_BackRequested(NavigationView sender, NavigationViewBackRequestedEventArgs args)
 		{
+			// Pause the game
 			Timer.Stop();
 			Game.Pause();
 
+			// The confirm dialog
 			MessageDialog dialog = new MessageDialog("Do you really want to really head back?", "Alert");
+			// Assign commands
 			dialog.Commands.Add(new UICommand { Label = "Yes", Id = 0 });
 			dialog.Commands.Add(new UICommand { Label = "No", Id = 1 });
 			dialog.DefaultCommandIndex = 0;
 			dialog.CancelCommandIndex = 1;
 
+			// Get the command chosen
 			IUICommand command = await dialog.ShowAsync();
 			int id = (int)command.Id;
 
+			// Check the command
 			if (id == dialog.CancelCommandIndex)
 			{
+				// Unpause the game if pressed cancel
 				Game.Unpause();
 				Timer.Start();
 				return;
 			}
 
+			// Go to the mainpage
 			Frame.Navigate(typeof(MainPage));
 		}
 
+		// Called if the restart button is pressed. Checks first if you've finished the
+		// game then checks if you really want to restart. If not any then resumes the game
 		private async void Restart(object sender, RoutedEventArgs e)
 		{
+			// Check if the game has ended
 			if (!Game.HasEnded)
 			{
+				// If not stop the timer
 				Timer.Stop();
 				Game.Pause();
 
-
+				// Confirm with the user on their intentions
 				MessageDialog dialog = new MessageDialog("Are you sure you want to restart?", "Alert");
+				// Assign commands
 				dialog.Commands.Add(new UICommand { Label = "Yes", Id = 0 });
 				dialog.Commands.Add(new UICommand { Label = "No", Id = 1 });
 				dialog.DefaultCommandIndex = 0;
 				dialog.CancelCommandIndex = 1;
 
+				// Get their command
 				IUICommand command = await dialog.ShowAsync();
 				int id = (int)command.Id;
 
+				// Check their command
 				if (id == dialog.CancelCommandIndex)
 				{
+					// If command is cancel then unpause
 					Game.Unpause();
 					Timer.Start();
 					return;
 				}
 			}
+
+			// Reload page with the parameters
 			Frame.Navigate(typeof(GamePage), param);
 
 		}

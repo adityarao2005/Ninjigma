@@ -22,6 +22,7 @@ namespace Ninjigma
 	{
 		public ContentRadioButton()
 		{
+			// Initializes the component
 			this.InitializeComponent();
 		}
 
@@ -68,6 +69,7 @@ namespace Ninjigma
 		// Click event handler
 		public event RoutedEventHandler Click;
 
+		// Handles the radiobutton click event
 		private void RadioButton_Click(object sender, RoutedEventArgs e) => Click.Invoke(this, e);
 
 
