@@ -60,17 +60,23 @@ namespace Ninjigma.Util
 			}
 		}
 
+		// Split the image into 2D array/grid of specified rows and columns
 		public static async Task<SoftwareBitmap[,]> Split(SoftwareBitmap bitmap, int rows, int columns)
 		{
+			// Initialize the widths of each image
 			int columnWidth = bitmap.PixelWidth / columns;
 			int rowHeight = bitmap.PixelHeight / rows;
 
+			// Create a software bitmap 2D array
 			SoftwareBitmap[,] bitmaps = new SoftwareBitmap[rows, columns];
 
+			// Iterate, crop, and save
 			for (int row = 0; row < rows; row++)
 			{
 				for (int column = 0; column < columns; column++)
 				{
+					// Crop the bitmap at column to pixels and row to pixels
+					// with the size being the width of the image
 					SoftwareBitmap bitmapt = await Crop(bitmap, new BitmapBounds { X = (uint)(column * columnWidth), Y = (uint)(row * rowHeight), Width = (uint)columnWidth, Height = (uint)rowHeight });
 					bitmaps[row, column] = bitmapt;
 				}
