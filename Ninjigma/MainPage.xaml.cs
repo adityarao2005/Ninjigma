@@ -1,4 +1,5 @@
-﻿using Ninjigma.Util;
+﻿using Microsoft.Graphics.Canvas.Text;
+using Ninjigma.Util;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -34,11 +35,6 @@ namespace Ninjigma
 	{
 		private Difficulty difficulty = Difficulty.EASY;
 
-
-		private StorageFile oldValue;
-
-
-
 		public StorageFile Image
 		{
 			get { return (StorageFile)GetValue(ImageProperty); }
@@ -52,8 +48,6 @@ namespace Ninjigma
 		private static void ImageChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
 			MainPage page = d as MainPage;
-
-			page.oldValue = e.OldValue as StorageFile;
 
 			page.puzzleImage.Source = new BitmapImage(new Uri((e.NewValue as StorageFile).Path));
 		}
@@ -208,18 +202,7 @@ namespace Ninjigma
 			object[] args = new object[] { Image, difficulty };
 
 			Frame.Navigate(typeof(GamePage), args);
-			//switch (difficulty)
-			//{
-			//	case Difficulty.EASY:
-			//		Frame.Navigate(typeof(GamePage_Easy), Image);
-			//		break;
-			//	case Difficulty.MEDIUM:
-			//		Frame.Navigate(typeof(GamePage_Medium), Image);
-			//		break;
-			//	case Difficulty.HARD:
-			//		Frame.Navigate(typeof(GamePage_Hard), Image);
-			//		break;
-			//}
 		}
+
 	}
 }
