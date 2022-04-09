@@ -17,6 +17,7 @@ using Windows.UI.Xaml.Media;
 namespace Ninjigma
 {
 	// Class that supports outlined text.
+	// Not my work, but its awesome work
 	// Borrowed from https://github.com/sonnemaf/Outline
 	//
 	sealed class OutlinedTextBlock : UserControl
