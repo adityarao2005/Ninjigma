@@ -1,4 +1,5 @@
-﻿<Page
+﻿<!-- This is the page where we have the game sitting and we are able to show the image, the time and the option to exit and restart -->
+<Page
     x:Class="Ninjigma.GamePage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -11,10 +12,13 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
+	<!-- Create a navigation view so that we are able to make a side nav to keep the picture and the back button -->
 	<winui:NavigationView IsSettingsVisible="False" PaneTitle="View The Puzzle Image" PaneDisplayMode="Auto" IsPaneOpen="False" BackRequested="NavigationView_BackRequested" IsBackEnabled="True">
+		<!-- The picture acts as the pane content -->
 		<winui:NavigationView.PaneCustomContent>
 			<Image x:Name="helpImage"/>
 		</winui:NavigationView.PaneCustomContent>
+		<!-- The grid acts as the main content which holds the restart button, the game, and the timer, 1x3 responsive grid -->
 		<Grid>
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="*"/>
@@ -24,11 +28,14 @@
 				<RowDefinition Height="15*"/>
 				<RowDefinition />
 			</Grid.RowDefinitions>
+			
+			<!-- the top panel to hold the restart button and the timer-->
 			<RelativePanel VerticalAlignment="Center">
 				<Button Margin="5, 0, 1, 0" Click="Restart" Content="Restart"/>
 				<TextBlock Margin="1, 0, 5, 0" x:Name="Time" Text="0:00:00" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True" />
 				<TextBlock Text="Time Taken:" RelativePanel.LeftOf="Time" RelativePanel.AlignVerticalCenterWithPanel="True" />
 			</RelativePanel>
+			<!-- where the gameis going to go -->
 			<Viewbox Stretch="Uniform" Grid.Row="1" Grid.Column="1">
 				<Frame Height="300" Width="300" x:Name="gameFrame"/>
 			</Viewbox>

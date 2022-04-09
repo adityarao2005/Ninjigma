@@ -1,4 +1,5 @@
-﻿<UserControl
+﻿<!-- Create the grid where the control is the same al throughout -->
+<UserControl
     x:Class="Ninjigma.UniformGrid"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -9,8 +10,9 @@
     d:DesignHeight="300"
     d:DesignWidth="400">
 
+	<!-- the resources of the control -->
 	<UserControl.Resources>
-
+		<!-- Create the styles for the grid -->
 		<Style TargetType="Grid">
 			<Style.Setters>
 				<Setter Property="Background" Value="{x:Bind Background}" />
@@ -20,6 +22,7 @@
 		</Style>
 	</UserControl.Resources>
 
+	<!-- bind borderthickness to this border thickness -->
 	<Grid x:Name="grid" BorderThickness="{x:Bind BorderThickness}" />
 
 </UserControl>

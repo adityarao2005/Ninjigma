@@ -1,4 +1,5 @@
-﻿<UserControl
+﻿<!-- This control is about creating a radiobutton with a graphic on the top of it -->
+<UserControl
     x:Class="Ninjigma.ContentRadioButton"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -8,6 +9,7 @@
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
+	<!-- The control which is really a grid -->
 	<Grid x:Name="ContentGrid">
 		<Grid.RowDefinitions>
 			<RowDefinition />
@@ -16,8 +18,11 @@
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition />
 		</Grid.ColumnDefinitions>
+		<!-- Where the content is going to be -->
 		<Border Child="{x:Bind Value}" />
+		<!-- The radio button -->
 		<RelativePanel Grid.Row="1">
+			<!-- Make sure that the radio button has similarities to the control we are using -->
 			<RadioButton MinWidth="0"  RelativePanel.AlignHorizontalCenterWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True" Content="{x:Bind Text}" Background="{x:Bind Background}" Foreground="{x:Bind Foreground}" GroupName="{x:Bind GroupName, Mode=TwoWay}" Click="RadioButton_Click" IsChecked="{x:Bind IsSelected, Mode=TwoWay}"/>
 
 		</RelativePanel>

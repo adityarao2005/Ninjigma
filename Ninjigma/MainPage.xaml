@@ -1,4 +1,5 @@
-﻿<Page xmlns:my="using:Microsoft.UI.Xaml.Media" 
+﻿<!-- this is the main intro page where the user gets to choose an image and their difficulty and play the game -->
+<Page 
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:Ninjigma"
@@ -7,14 +8,16 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:numerics="using:System.Numerics"
-	xmlns:canvas="using:Microsoft.Graphics.Canvas.UI.Xaml"
     x:Class="Ninjigma.MainPage"
     mc:Ignorable="d" Width="{x:Bind Path=Frame.Width}" Height="{x:Bind Path=Frame.Height}" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+	<!-- Page resources such as the null checker -->
 	<Page.Resources>
 		<converters:NullChecker x:Key="nullChecker" />
 		<x:String x:Key="titleString">Drop or Upload an Image and Play the Puzzle</x:String>
 	</Page.Resources>
 
+	<!-- The content grid which holds all the content -->
 	<Grid>
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition />
@@ -34,6 +37,8 @@
 			<RowDefinition Height="24*"/>
 			<RowDefinition Height="3*"/>
 		</Grid.RowDefinitions>
+
+		<!-- This is what I call the dragboard because the dragboard will be able to recieve anything dragged over top and respond, one of the main reasons i switched to this from jfx -->
 		<Grid Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="6" AllowDrop="True" DragOver="Image_DragOver" Drop="Image_Drop">
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition />
@@ -51,17 +56,22 @@
 				<RowDefinition />
 			</Grid.RowDefinitions>
 
+			<!-- The background -->
 			<Rectangle Fill="{StaticResource DropTarget}" RadiusX="60"  RadiusY="60" Grid.ColumnSpan="6" Grid.RowSpan="5"/>
+			<!-- the dotted lines -->
 			<Rectangle Stroke="{ThemeResource ApplicationPageBackgroundThemeBrush}" StrokeThickness="5" StrokeDashCap="Flat" RadiusX="50" RadiusY="50" Margin="10" StrokeDashOffset="20" StrokeDashArray="4" Grid.ColumnSpan="6" Grid.RowSpan="5"/>
+			<!-- The svg image used to assist them to upload or drop an image-->
 			<Image x:Name="image" Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2">
 				<Image.Source>
 					<SvgImageSource UriSource="ms-appx:///Assets/upload.svg" RasterizePixelHeight="488" RasterizePixelWidth="640"/>
 				</Image.Source>
 			</Image>
+			<!-- This holds the url box and the load button -->
 			<RelativePanel Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="4">
 				<TextBox x:Name="urlBox" Text="Drop Files Here" IsEnabled="False" RelativePanel.AlignVerticalCenterWithPanel="True" CornerRadius="8, 0, 0, 8" RelativePanel.AlignLeftWithPanel="True" RelativePanel.LeftOf="loadButton"/>
 				<Button x:Name="loadButton" Content="Load" IsEnabled="False"  RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True" CornerRadius="0, 8, 8, 0" Click="LoadButton_Click" />
 			</RelativePanel>
+			<!-- This holds the file upload and the url button -->
 			<Grid Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="4">
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition />
@@ -76,13 +86,16 @@
 			</Grid>
 
 		</Grid>
+		<!-- Holds the image and the text box -->
 		<Border Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="3" BorderBrush="Black" BorderThickness="2">
 			<Grid>
+				<!-- When the image is null the text box is visible else it dissappeers-->
 				<TextBlock Text="No Image Added" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="{Binding ElementName=puzzleImage, Path=Source, Converter={StaticResource nullChecker}}">
 				</TextBlock>
 				<Image x:Name="puzzleImage" Source="{x:Null}" />
 			</Grid>
 		</Border>
+		<!-- The grid to hold the Difficulty radio buttons -->
 		<Grid Grid.Row="3" Grid.Column="4" Grid.ColumnSpan="3">
 			<Grid.RowDefinitions>
 				<RowDefinition Height="*" />
@@ -93,9 +106,11 @@
 				<ColumnDefinition />
 				<ColumnDefinition />
 			</Grid.ColumnDefinitions>
+			<!-- Introduces the buttons -->
 			<Viewbox Grid.ColumnSpan="3">
 				<TextBlock Text="Choose your Difficulty" HorizontalAlignment="Center" FontWeight="Medium" />
 			</Viewbox>
+			<!-- the 3 radio buttons with the grids embedde in them -->
 			<local:ContentRadioButton GroupName="difficulty" Text="Easy" Grid.Row="1" Click="ContentRadioButton_Click" IsSelected="True">
 				<local:ContentRadioButton.Value>
 					<Viewbox Margin="20,20,20,20">
@@ -119,8 +134,10 @@
 				</local:ContentRadioButton.Value>
 			</local:ContentRadioButton>
 		</Grid>
+		<!-- The play button -->
 		<Button x:Name="playButton" Content="Play" HorizontalAlignment="Center" Grid.Column="6" Grid.Row="4" IsEnabled="{Binding ElementName=puzzleImage, Path=Source, Converter={StaticResource nullChecker}, ConverterParameter='boolean'}" Click="playButton_Click"/>
 
+		<!-- The flashed textbox -->
 		<Grid Grid.RowSpan="3" Grid.Row="0" Grid.ColumnSpan="4" VerticalAlignment="Stretch" RenderTransformOrigin="0.5,0.5">
 			<Grid.RenderTransform>
 				<CompositeTransform Rotation="-30" TranslateY="0"/>
