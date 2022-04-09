@@ -20,22 +20,27 @@ namespace Ninjigma
 	/// <summary>
 	/// An empty page that can be used on its own or navigated to within a Frame.
 	/// </summary>
+	// The hard game grid
 	public sealed partial class HardGrid : GridGame
 	{
+		// Constructor for the grid
 		public HardGrid() : base()
 		{
 		}
 
+		// Gives base code xaml handle to grid
 		public override Grid GameGrid()
 		{
 			return gameGrid;
 		}
 
+		// Calls initializecomponent
 		public override void Initialize()
 		{
 			this.InitializeComponent();
 		}
 
+		// returns the amount of times that a piece is moved
 		public override int CYCLES()
 		{
 			return 1000;
