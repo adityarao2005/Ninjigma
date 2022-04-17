@@ -10,7 +10,7 @@
 	<Identity
 	  Name="43ac6b25-fc19-455c-a447-9723b4bff65a"
 	  Publisher="CN=Raos"
-	  Version="1.0.0.0" />
+	  Version="1.0.4.0" />
 
 	<mp:PhoneIdentity PhoneProductId="43ac6b25-fc19-455c-a447-9723b4bff65a" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
