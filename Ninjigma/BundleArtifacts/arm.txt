@@ -1,0 +1,4 @@
+MainPackage=C:\Users\Raos\source\repos\Ninjigma\Ninjigma\bin\ARM\Release\Ninjigma_1.0.8.0_ARM.msix
+SymbolPackage=C:\Users\Raos\source\repos\Ninjigma\Ninjigma\obj\ARM\Release\Symbols\Ninjigma_1.0.8.0_ARM.appxsym
+ResourcePack=C:\Users\Raos\source\repos\Ninjigma\Ninjigma\bin\ARM\Release\Ninjigma_1.0.8.0_scale-100.msix
+ResourcePack=C:\Users\Raos\source\repos\Ninjigma\Ninjigma\bin\ARM\Release\Ninjigma_1.0.8.0_scale-400.msix
