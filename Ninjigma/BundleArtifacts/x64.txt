@@ -1,0 +1,2 @@
+MainPackage=C:\Users\Raos\source\repos\Ninjigma\Ninjigma\bin\x64\Release\Ninjigma_1.0.4.0_x64.msix
+SymbolPackage=C:\Users\Raos\source\repos\Ninjigma\Ninjigma\obj\x64\Release\Symbols\Ninjigma_1.0.4.0_x64.appxsym
